@@ -7,8 +7,8 @@ use chrono::*;
 
 fn log_time(filename: &'static str) -> io::Result<()> {
     let local: DateTime<Local> = Local::now();
-    let formatted_time = local.format("%Y").to_string();
-    let bytes = formatted_time.as_bytes();
+    let formatted = local.format("%a, %b %d %Y %I:%M:%S %p\n").to_string();
+    let bytes = formatted.as_bytes();
     let mut f = File::create(filename)?;
     f.write_all(bytes)?;
     Ok(())
