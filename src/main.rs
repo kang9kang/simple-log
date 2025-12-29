@@ -5,10 +5,16 @@ use std::fs::File;
 use std::io;
 use chrono::*;
 
-fn log_time(filename: &'static str) -> io::Result<()> {
+fn formatted_time_entry() -> String {
     let local: DateTime<Local> = Local::now();
     let formatted = local.format("%a, %b %d %Y %I:%M:%S %p\n").to_string();
-    let bytes = formatted.as_bytes();
+    formatted
+}
+
+fn log_time(filename: &'static str) -> io::Result<()> {
+    let entry = formatted_time_entry();
+    let bytes = entry.as_bytes();
+
     let mut f = File::create(filename)?;
     f.write_all(bytes)?;
     Ok(())
