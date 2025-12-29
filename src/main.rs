@@ -1,9 +1,9 @@
 extern crate chrono;
 
-use std::io::prelude::*;
+use chrono::*;
 use std::fs::File;
 use std::io;
-use chrono::*;
+use std::io::prelude::*;
 
 fn formatted_time_entry() -> String {
     let local: DateTime<Local> = Local::now();
@@ -11,18 +11,23 @@ fn formatted_time_entry() -> String {
     formatted
 }
 
+fn record_entry_in_log(filename: &str, bytes: &[u8]) -> io::Result<()> {
+    let mut f = File::create(filename)?;
+    f.write_all(bytes)?;
+    Ok(())
+}
+
 fn log_time(filename: &'static str) -> io::Result<()> {
     let entry = formatted_time_entry();
     let bytes = entry.as_bytes();
 
-    let mut f = File::create(filename)?;
-    f.write_all(bytes)?;
+    record_entry_in_log(filename, &bytes)?;
     Ok(())
 }
 
 fn main() {
     match log_time("log.txt") {
         Ok(..) => println!("File created!"),
-        Err(..) => println!("Error: could not create file.")
+        Err(..) => println!("Error: could not create file."),
     }
 }
