@@ -2,12 +2,16 @@
 
 use nickel::Nickel;
 
+fn say_hello() -> &'static str{
+    "Hello dear world!"
+}
+
 fn main() {
     let mut server = Nickel::new();
 
     server.utilize(router! {
         get "**" => |_req, _res| {
-            "Hello world!"
+            say_hello()
         }
     });
 
